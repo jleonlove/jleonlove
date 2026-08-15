@@ -13,9 +13,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-          cache: 'npm'
       - name: Verify npm version
         run: test "$(npm --version)" = "10.9.2"
+      - name: Refresh dependency lock for patched framework
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Emit patched lockfile for repository capture
+        run: base64 -w0 package-lock.json
       - name: Deterministic install
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Qualification
