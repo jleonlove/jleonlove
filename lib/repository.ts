@@ -51,8 +51,8 @@ let writing = Promise.resolve();
 
 function migrate(raw: Partial<AtlasState>): AtlasState {
   const state = { ...structuredClone(seed), ...raw } as AtlasState;
-  state.documents = (state.documents ?? []).map((d) => ({ organizationId: "org_jlst", workspaceId: "ws_atlas", createdBy: "usr_jleon", ...d }));
-  state.decisions = (state.decisions ?? []).map((d) => ({ organizationId: "org_jlst", workspaceId: "ws_atlas", actorId: "usr_jleon", actorRole: "owner", ...d }));
+  state.documents = (state.documents ?? []).map((d) => ({ ...d, organizationId: d.organizationId ?? "org_jlst", workspaceId: d.workspaceId ?? "ws_atlas", createdBy: d.createdBy ?? "usr_jleon" }));
+  state.decisions = (state.decisions ?? []).map((d) => ({ ...d, organizationId: d.organizationId ?? "org_jlst", workspaceId: d.workspaceId ?? "ws_atlas", actorId: d.actorId ?? "usr_jleon", actorRole: d.actorRole ?? "owner" }));
   state.agentReleases = state.agentReleases ?? structuredClone(seed.agentReleases);
   state.toolExecutions = state.toolExecutions ?? [];
   state.deals = state.deals ?? [];
