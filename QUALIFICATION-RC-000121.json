@@ -1,0 +1,14 @@
+{
+  "release": "RC-000121",
+  "started_at": "2026-08-15T00:52:22.197Z",
+  "status": "FAILED",
+  "gates": [
+    {
+      "name": "dependency_lock",
+      "status": "FAILED",
+      "detail": "No dependency lockfile present"
+    }
+  ],
+  "finished_at": "2026-08-15T00:52:22.197Z",
+  "package_sha256": "933b7aa12be466b22314a3c5e37978e2a32a0f9ee9d7caa26b93beceba00d006"
+}

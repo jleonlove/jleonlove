@@ -1,0 +1,6 @@
+import {describe,it,expect} from 'vitest'; import {stressClosing} from './closing-intelligence'; import type {AtlasDeal} from './types';
+const base:AtlasDeal={id:'d',organizationId:'o',workspaceId:'w',createdBy:'u',title:'deal',commodity:'gold',stage:'DD',participants:[],evidence:[],requirements:[],assumptions:[],createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+describe('closing stress',()=>{
+ it('stops on critical physical conflict',()=>{const d={...base,evidence:[{id:'e1',claim:'capacity',status:'INDEPENDENTLY_VERIFIED' as const,sourceIds:['a'],independentSourceGroups:1,observedAt:new Date().toISOString()},{id:'e2',claim:'capacity',status:'INDEPENDENTLY_VERIFIED' as const,sourceIds:['b'],independentSourceGroups:1,observedAt:new Date().toISOString()}]}; const r=stressClosing(d,[{id:'c1',metric:'monthly_capacity',value:200,unit:'kg',sourceEvidenceIds:['e1']},{id:'c2',metric:'monthly_capacity',value:500,unit:'kg',sourceEvidenceIds:['e2']}]);expect(r.disposition).toBe('STOP');expect(r.releaseBlocked).toBe(true);});
+ it('advances a clean verified deal',()=>{const d={...base,evidence:[{id:'e',claim:'seller',status:'INDEPENDENTLY_VERIFIED' as const,sourceIds:['registry'],independentSourceGroups:2,observedAt:new Date().toISOString()}]};expect(stressClosing(d).disposition).toBe('ADVANCE');});
+});

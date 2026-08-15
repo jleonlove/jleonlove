@@ -1,0 +1,1 @@
+document.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{if(!location.hostname.includes("localhost"))console.log("Atlas action:",b.textContent)}));

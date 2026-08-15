@@ -1,0 +1,7 @@
+package containment
+import ("crypto/ed25519"; "crypto/rand"; "errors"; "testing"; "time")
+func fixture(t *testing.T)(SignedAttestation,Expected,Keyring){ t.Helper(); pub,priv,err:=ed25519.GenerateKey(rand.Reader); if err!=nil{t.Fatal(err)}; now:=time.Now().UTC(); a:=Attestation{RuntimeID:"runtime-1",RuntimeEpoch:7,AgentID:"agent-1",ReleaseID:"release-1",ProfileDigest:"profile",NetworkDigest:"network",FilesystemDigest:"fs",RuntimeDigest:"runtime",IssuedAt:now.Add(-time.Second),ExpiresAt:now.Add(time.Minute)}; s,err:=Sign("k1",priv,a); if err!=nil{t.Fatal(err)}; e:=Expected{AgentID:"agent-1",ReleaseID:"release-1",ProfileDigest:"profile",NetworkDigest:"network",FilesystemDigest:"fs",RuntimeDigest:"runtime"}; return s,e,Keyring{"k1":pub} }
+func TestSignedAttestationValid(t *testing.T){s,e,k:=fixture(t);if err:=VerifySigned(time.Now().UTC(),s,e,k);err!=nil{t.Fatal(err)}}
+func TestTamperedContainmentDenied(t *testing.T){s,e,k:=fixture(t);s.Attestation.NetworkDigest="attacker";if err:=VerifySigned(time.Now().UTC(),s,e,k);!errors.Is(err,ErrInvalidSignature){t.Fatalf("got %v",err)}}
+func TestUnknownContainmentKeyDenied(t *testing.T){s,e,_:=fixture(t);if err:=VerifySigned(time.Now().UTC(),s,e,Keyring{});!errors.Is(err,ErrUnknownKey){t.Fatalf("got %v",err)}}
+func TestExpiredSignedAttestationDenied(t *testing.T){s,e,k:=fixture(t);if err:=VerifySigned(time.Now().UTC().Add(2*time.Minute),s,e,k);err==nil{t.Fatal("expired accepted")}}

@@ -1,0 +1,8 @@
+{
+  "release":"RC-000123",
+  "status":"ENVIRONMENT_BLOCKED",
+  "production_qualified":false,
+  "resolved":["deterministic CI qualification path","pinned Node/npm","npm ci only","lockfile mandatory","build after qualification"],
+  "remaining_blocker":"Current execution environment cannot resolve npm registry dependencies within allowed runtime; package-lock.json cannot be truthfully generated here.",
+  "rule":"No lockfile, no npm ci, no full test evidence, no production qualification."
+}

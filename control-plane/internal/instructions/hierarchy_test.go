@@ -1,0 +1,6 @@
+package instructions
+import("errors";"testing")
+func TestLowerCannotOverrideOrgDeny(t *testing.T){_,e:=Compile([]Rule{{Level:Organization,Key:"secrets.exfiltrate",Value:"deny",Deny:true},{Level:Task,Key:"secrets.exfiltrate",Value:"allow"}});if !errors.Is(e,ErrPolicyOverride){t.Fatal(e)}}
+func TestCapabilityExpansionDenied(t *testing.T){_,e:=Compile([]Rule{{Level:Repository,Key:"capability.prod.deploy",Value:"deny"},{Level:Agent,Key:"capability.prod.deploy",Value:"allow"}});if !errors.Is(e,ErrAuthorityExpansion){t.Fatal(e)}}
+func TestLowerCanAddNonConflictingConstraint(t *testing.T){e,err:=Compile([]Rule{{Level:Organization,Key:"network.external",Value:"deny",Deny:true},{Level:Directory,Key:"style.tests",Value:"required"}});if err!=nil{t.Fatal(err)};if !Allowed(e,"style.tests"){t.Fatal("constraint lost")}}
+func TestHierarchyDeterministic(t *testing.T){a,ea:=Compile([]Rule{{Level:Task,Key:"style.tests",Value:"required"},{Level:Organization,Key:"network.external",Value:"deny",Deny:true}});b,eb:=Compile([]Rule{{Level:Organization,Key:"network.external",Value:"deny",Deny:true},{Level:Task,Key:"style.tests",Value:"required"}});if ea!=nil||eb!=nil||a.Rules["style.tests"]!=b.Rules["style.tests"]{t.Fatal("non-deterministic")}}

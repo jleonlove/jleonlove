@@ -1,0 +1,18 @@
+{
+  "providers": {
+    "xai": {
+      "api_key_env": "XAI_API_KEY",
+      "default_model": "grok-4.5"
+    },
+    "openai": {
+      "api_key_env": "OPENAI_API_KEY",
+      "default_model": "configure-at-deploy"
+    }
+  },
+  "rules": {
+    "fail_closed_without_provider": true,
+    "budget_gate": true,
+    "capability_routing": true,
+    "fallback": true
+  }
+}

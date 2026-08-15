@@ -1,0 +1,1 @@
+RC-000096: resilient multi-provider commodity ingestion adapters; deterministic priority; timeout isolation; circuit breaker; source identity enforcement; healthy fallback; full Go suite PASS.

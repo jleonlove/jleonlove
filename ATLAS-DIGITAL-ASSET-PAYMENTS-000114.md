@@ -1,0 +1,2 @@
+# RC-000114 — Crypto Payment Security & Finality Hardening
+Adds chain-observation verification, exact destination and XRP/XLM memo/tag binding, transaction replay rejection, configurable confirmation/finality gates, quote-expiry enforcement, overpayment review, and multi-approval treasury authorization with expiring approvals and nonce replay protection. This is provider-agnostic security logic; no private keys or signing capability are introduced into ordinary Atlas application state.

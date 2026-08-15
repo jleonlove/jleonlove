@@ -1,0 +1,14 @@
+{
+  "release": "RC-000146",
+  "source": "RC-000145 verified persistent baseline",
+  "tests": {
+    "files": 18,
+    "total": 97,
+    "passed": 97,
+    "failed": 0,
+    "import_failures": 0
+  },
+  "offline_qualification": "PASS",
+  "production_qualification": "BLOCKED_EXTERNAL_GATES",
+  "release_policy": "immutable-four-part-set"
+}

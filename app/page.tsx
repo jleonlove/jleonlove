@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function Home(){return <main className="main"><section className="hero"><p className="eyebrow">Atlas Genesis</p><h1 className="title">Enterprise intelligence.<br/>Governed from the core.</h1><p className="muted">A working application shell for memory, trust, agents, and measurable outcomes.</p><p><Link className="cta" href="/dashboard">Open Atlas</Link></p></section></main>}

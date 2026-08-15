@@ -1,0 +1,2 @@
+# Atlas Supercharge RC-000106
+Adds deterministic Closing Intelligence stress scoring and fail-closed dispositions: ADVANCE, HOLD, RESCUE, STOP. Combines evidence integrity, critical blockers, broken dependency graphs, Deal Rescue findings, and physical-reality conflicts. Critical physical conflicts or kill conditions block release. Includes regression cases for clean verified deals and contradictory capacity claims.
