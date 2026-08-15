@@ -11,15 +11,16 @@ export function requestId(request?: Request) {
 }
 
 export function ok<T>(data: T, request?: Request, init?: ResponseInit) {
-  return Response.json(
+  return NextResponse.json(
     { success: true, data, requestId: requestId(request) } satisfies ApiResponse<T>,
     init,
   );
 }
 
 export function fail(code: string, message: string, status: number, request?: Request) {
-  return Response.json(
+  return NextResponse.json(
     { success: false, error: { code, message }, requestId: requestId(request) } satisfies ApiResponse<never>,
     { status },
   );
 }
+import { NextResponse } from "next/server";
