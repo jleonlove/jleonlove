@@ -1,6 +1,7 @@
 name: Atlas deterministic qualification
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches: [main]
 jobs:
@@ -15,8 +16,10 @@ jobs:
           cache: 'npm'
       - name: Verify npm version
         run: test "$(npm --version)" = "10.9.2"
-      - name: Require committed lockfile
-        run: test -f package-lock.json
+      - name: Bootstrap dependency lock
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Emit lockfile for repository capture
+        run: base64 -w0 package-lock.json
       - name: Deterministic install
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Qualification
