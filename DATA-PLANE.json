@@ -1,0 +1,20 @@
+{
+  "development_backend": "in-process evidence-bound store",
+  "production_targets": [
+    "PostgreSQL-compatible transactional database",
+    "encrypted object storage",
+    "backup/restore target"
+  ],
+  "controls": [
+    "tenant isolation",
+    "optimistic concurrency",
+    "evidence binding",
+    "content digest",
+    "no committed credentials"
+  ],
+  "status": {
+    "persistent_external_database": false,
+    "persistent_object_storage": false,
+    "backup_restore_drill": false
+  }
+}

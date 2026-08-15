@@ -1,0 +1,3 @@
+import {AppShell} from "@/components/AppShell";
+const agents=[['Executive Agent','Active','Briefings, decision support'],['Compliance Agent','Active','Policy checks, evidence'],['Research Agent','Standby','Market and company intelligence'],['Operations Agent','Active','Workflow optimization']];
+export default function Agents(){return <AppShell><p className="eyebrow">Agent OS</p><h1>Governed digital workforce</h1><section className="grid">{agents.map(a=><article className="card" key={a[0]}><span className="badge good">{a[1]}</span><h2>{a[0]}</h2><p className="muted">{a[2]}</p><small>Task-scoped permissions · Full audit</small></article>)}</section></AppShell>}

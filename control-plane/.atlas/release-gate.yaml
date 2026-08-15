@@ -1,0 +1,20 @@
+version: atlas.release-gate/v1
+required:
+  - compile
+  - unit
+  - race
+  - governance-e2e
+  - fuzz-regression
+  - containment
+  - evidence-integrity
+  - supply-chain
+  - dependency-policy
+  - release-reproducibility
+invariants:
+  unauthorized_runtime_calls: 0
+  containment_escapes: 0
+  successful_replays: 0
+  authority_expansions: 0
+  unattributed_side_effects: 0
+  undetected_evidence_mutations: 0
+fail_closed: true

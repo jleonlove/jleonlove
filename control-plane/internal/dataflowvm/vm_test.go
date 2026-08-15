@@ -1,0 +1,7 @@
+package dataflowvm
+import("errors";"reflect";"testing")
+func TestDeterministicDAG(t *testing.T){p:=Program{Budget:10,Nodes:map[string]Node{"fetch":{ID:"fetch",Capability:"read",Cost:2},"calc":{ID:"calc",Capability:"compute",DependsOn:[]string{"fetch"},Cost:3},"report":{ID:"report",Capability:"write",DependsOn:[]string{"calc"},Cost:1}}};r,e:=Compile(p,map[string]bool{"read":true,"compute":true,"write":true});if e!=nil||!reflect.DeepEqual(r.Order,[]string{"fetch","calc","report"}){t.Fatalf("%v %v",r,e)}}
+func TestCapabilityDenied(t *testing.T){p:=Program{Budget:2,Nodes:map[string]Node{"x":{ID:"x",Capability:"pay",Cost:1}}};if _,e:=Compile(p,map[string]bool{});!errors.Is(e,ErrCapability){t.Fatal(e)}}
+func TestMissingDependency(t *testing.T){p:=Program{Budget:2,Nodes:map[string]Node{"x":{ID:"x",Capability:"read",DependsOn:[]string{"missing"},Cost:1}}};if _,e:=Compile(p,map[string]bool{"read":true});!errors.Is(e,ErrDependency){t.Fatal(e)}}
+func TestCycleDenied(t *testing.T){p:=Program{Budget:5,Nodes:map[string]Node{"a":{ID:"a",Capability:"read",DependsOn:[]string{"b"}},"b":{ID:"b",Capability:"read",DependsOn:[]string{"a"}}}};if _,e:=Compile(p,map[string]bool{"read":true});!errors.Is(e,ErrCycle){t.Fatal(e)}}
+func TestBudgetDenied(t *testing.T){p:=Program{Budget:1,Nodes:map[string]Node{"x":{ID:"x",Capability:"read",Cost:2}}};if _,e:=Compile(p,map[string]bool{"read":true});!errors.Is(e,ErrBudget){t.Fatal(e)}}

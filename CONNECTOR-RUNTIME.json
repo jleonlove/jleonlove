@@ -1,0 +1,19 @@
+{
+  "controls": [
+    "tenant required",
+    "explicit action",
+    "scope policy",
+    "evidence required",
+    "per-call timeout",
+    "fail closed",
+    "no embedded credentials"
+  ],
+  "planned_live_connectors": [
+    "model providers",
+    "document/object storage",
+    "regulatory sources",
+    "commodity/market data",
+    "logistics/shipping data"
+  ],
+  "live_external_connector_verified": false
+}

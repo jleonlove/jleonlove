@@ -1,0 +1,2 @@
+# RC-000132 — Event-Driven Deal Control Tower
+Adds provenance-scoped event ingestion, idempotency, transaction-version enforcement, deterministic ordering/replay, quarantine and reconciliation dispositions, material-state invalidation, and automatic closing-readiness recalculation. Material recommendations are state/version-bound; contradictory authoritative events cannot silently overwrite transaction truth.

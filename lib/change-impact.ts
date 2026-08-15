@@ -1,0 +1,3 @@
+import type { AtlasDeal } from './types';
+const IMPACT:Record<string,string[]>={quantity:['capacity','logistics','insurance','financing','economics','contract'],unit:['economics','contract','logistics'],currency:['pricing','economics','financing','contract'],indicativeValue:['financing','economics','approvals'],stage:['requirements','approvals'],beneficiary:['banking','counterparty','compliance','payment']};
+export function changeImpact(before:AtlasDeal,after:AtlasDeal){const changed=Object.keys(IMPACT).filter(k=>(before as any)[k]!== (after as any)[k]);const affected=[...new Set(changed.flatMap(k=>IMPACT[k]))];return {dealId:after.id,changed,affected,revalidationRequired:affected.length>0};}

@@ -1,0 +1,16 @@
+{
+  "release": "RC-000146",
+  "target": "production-qualified",
+  "generated_at": "2026-08-15T04:49:00Z",
+  "gates": {
+    "live_integrations": {"status":"pending","release":"RC-000146"},
+    "regulatory_data": {"status":"pending","release":"RC-000146"},
+    "observability": {"status":"pending","release":"RC-000146"},
+    "load_chaos": {"status":"pending","release":"RC-000146"},
+    "security_assessment": {"status":"pending","release":"RC-000146"},
+    "disaster_recovery": {"status":"pending","release":"RC-000146"},
+    "red_team": {"status":"pending","release":"RC-000146"},
+    "end_to_end_trade": {"status":"pending","release":"RC-000146"}
+  },
+  "rule": "A production gate passes only with release-bound, digest-verified, non-expired evidence. Pending, failed, stale, malformed, or missing evidence blocks production."
+}

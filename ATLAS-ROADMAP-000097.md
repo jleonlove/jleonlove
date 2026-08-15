@@ -1,0 +1,2 @@
+# Atlas RC-000097 — Freight & Logistics Decision Intelligence
+Adds fail-closed freight quote qualification and deterministic route-cost selection. Rejects stale/future, unlicensed, low-confidence, route/mode mismatched, malformed, and capacity-infeasible quotes while retaining rejection reasons for auditability. Provider-neutral by design; live carrier/AIS/port/rail/truck feeds remain external integrations.
