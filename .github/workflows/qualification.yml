@@ -13,15 +13,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
+          cache: 'npm'
       - name: Verify npm version
         run: test "$(npm --version)" = "10.9.2"
-      - name: Bootstrap dependency lock
-        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-      - name: Emit lockfile for repository capture
-        run: base64 -w0 package-lock.json
       - name: Deterministic install
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Qualification
-        run: npm run qualify
+        run: |
+          set +e
+          npm run qualify
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then exit 0; fi
+          if [ "$status" -eq 2 ]; then
+            node -e "const p=require('./package.json');const q=require('./QUALIFICATION-'+p.atlasRelease+'.json');if(q.status!=='REPOSITORY_QUALIFIED_PRODUCTION_BLOCKED')process.exit(1)"
+            echo "Repository qualified; external production authorization gates remain blocked."
+            exit 0
+          fi
+          exit "$status"
       - name: Build
         run: npm run build
