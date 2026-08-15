@@ -25,7 +25,11 @@ gate('test_discovery','PASS',{discovered_files:tests.length});
 const resultFile=`qualification-vitest-${RELEASE}.json`;
 const r=spawnSync(vitest,['run','--reporter=json',`--outputFile=${resultFile}`],{encoding:'utf8',timeout:120000,env:{...process.env,CI:'1'}});
 if(r.error?.code==='ETIMEDOUT'){gate('vitest','FAILED',{detail:'120s hard timeout'});finish('FAILED')}
-if(r.status!==0){gate('vitest','FAILED',{exit_code:r.status,stderr:String(r.stderr||'').slice(0,1500)});finish('FAILED')}
+if(r.status!==0){
+  const report=fs.existsSync(resultFile)?fs.readFileSync(resultFile,'utf8').slice(-12000):'';
+  gate('vitest','FAILED',{exit_code:r.status,stdout:String(r.stdout||'').slice(-2000),stderr:String(r.stderr||'').slice(-2000),report});
+  finish('FAILED')
+}
 if(!fs.existsSync(resultFile)){gate('vitest_evidence','FAILED',{detail:'runner exited 0 but JSON evidence missing'});finish('FAILED')}
 const vr=JSON.parse(fs.readFileSync(resultFile,'utf8')); const total=vr.numTotalTests??0, failed=vr.numFailedTests??0;
 if(total===0||failed!==0){gate('vitest_evidence','FAILED',{total_tests:total,failed_tests:failed});finish('FAILED')}
