@@ -8,7 +8,7 @@ const out=`QUALIFICATION-${RELEASE}.json`;
 const ev={release:RELEASE,started_at:new Date().toISOString(),status:'ENVIRONMENT_BLOCKED',gates:[]};
 const gate=(name,status,detail={})=>ev.gates.push({name,status,...detail});
 const sha=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
-const finish=(status=ev.status)=>{ev.status=status;ev.finished_at=new Date().toISOString();ev.source={package_json_sha256:sha('package.json'),lockfile:ev.lockfile||null};fs.writeFileSync(out,JSON.stringify(ev,null,2)+'\n');console.log(status);process.exit(status==='QUALIFIED'?0:status==='FAILED'?1:2)};
+const finish=(status=ev.status)=>{ev.status=status;ev.finished_at=new Date().toISOString();ev.source={package_json_sha256:sha('package.json'),lockfile:ev.lockfile||null};const evidence=JSON.stringify(ev,null,2)+'\n';fs.writeFileSync(out,evidence);console.log(evidence);process.exit(status==='QUALIFIED'?0:status==='FAILED'?1:2)};
 const expectedNode=pkg.engines?.node, expectedNpm=pkg.engines?.npm;
 if(process.version!==`v${expectedNode}`){gate('runtime_pin','FAILED',{expected:expectedNode,actual:process.version});finish('FAILED')}
 const npmV=spawnSync('npm',['--version'],{encoding:'utf8'}).stdout.trim();
