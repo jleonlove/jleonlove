@@ -26,8 +26,25 @@ const resultFile=`qualification-vitest-${RELEASE}.json`;
 const r=spawnSync(vitest,['run','--reporter=json',`--outputFile=${resultFile}`],{encoding:'utf8',timeout:120000,env:{...process.env,CI:'1'}});
 if(r.error?.code==='ETIMEDOUT'){gate('vitest','FAILED',{detail:'120s hard timeout'});finish('FAILED')}
 if(r.status!==0){
-  const report=fs.existsSync(resultFile)?fs.readFileSync(resultFile,'utf8').slice(-12000):'';
-  gate('vitest','FAILED',{exit_code:r.status,stdout:String(r.stdout||'').slice(-2000),stderr:String(r.stderr||'').slice(-2000),report});
+  let summary={};
+  if(fs.existsSync(resultFile)){
+    const report=JSON.parse(fs.readFileSync(resultFile,'utf8'));
+    summary={
+      total_tests:report.numTotalTests??null,
+      passed_tests:report.numPassedTests??null,
+      failed_tests:report.numFailedTests??null,
+      failed_suites:report.numFailedTestSuites??null,
+      failures:(report.testResults||[]).filter(s=>s.status==='failed').map(s=>({
+        file:s.name,
+        message:String(s.message||'').slice(-3000),
+        assertions:(s.assertionResults||[]).filter(a=>a.status==='failed').map(a=>({
+          name:a.fullName,
+          messages:(a.failureMessages||[]).map(m=>String(m).slice(-3000))
+        }))
+      }))
+    };
+  }
+  gate('vitest','FAILED',{exit_code:r.status,stdout:String(r.stdout||'').slice(-2000),stderr:String(r.stderr||'').slice(-2000),...summary});
   finish('FAILED')
 }
 if(!fs.existsSync(resultFile)){gate('vitest_evidence','FAILED',{detail:'runner exited 0 but JSON evidence missing'});finish('FAILED')}
