@@ -5,6 +5,11 @@ export interface PhysicalClaim { id:string; metric:string; value:number; unit:st
 export interface RealityFinding { code:string; severity:'LOW'|'MEDIUM'|'HIGH'|'CRITICAL'; message:string; evidenceIds:string[]; }
 export interface CriticalPathResult { ordered: DealRequirement[]; blockers: DealRequirement[]; unresolvedDependencies:string[]; }
 
+export function authorityChain(deal:AtlasDeal){
+ const unverified=deal.participants.filter(p=>p.authority!=='INDEPENDENTLY_VERIFIED').map(p=>p.id);
+ return {pass:unverified.length===0,unverified};
+}
+
 export function verifyAuthorityChain(deal:AtlasDeal, edges:AuthorityEdge[], now=new Date()) {
  const participantIds=new Set(deal.participants.map(p=>p.id)); const findings:string[]=[];
  for(const e of edges){
