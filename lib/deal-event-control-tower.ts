@@ -40,7 +40,7 @@ export function ingestDealEvent(state:DealControlState,e:AuthoritativeDealEvent)
  if(conflicting(state,e)){state.reconciliation.push(e);return {eventId:e.id,disposition:'RECONCILE',reason:'Conflicting authoritative material event requires reconciliation.'};}
  const late=e.baseVersion<state.version;
  state.seen.add(e.idempotencyKey); state.ledger.push(e); state.ledger.sort(stableEventOrder);
- if(MATERIAL.has(e.type)){state.deal=materialMutation(state.deal,e);state.version++;state.closing=stressClosing(state.deal);}
+ if(MATERIAL.has(e.type) && !late){state.deal=materialMutation(state.deal,e);state.version++;state.closing=stressClosing(state.deal);}
  return {eventId:e.id,disposition:late?'LATE':'ACCEPT',reason:late?'Accepted as historical; current state was not blindly overwritten.':'Accepted and transaction truth recalculated.'};
 }
 export function replayDealEvents(seed:AtlasDeal,events:AuthoritativeDealEvent[],version=1):DealControlState{
