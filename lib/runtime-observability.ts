@@ -1,4 +1,4 @@
-import crypto from "node:crypto";
+import { createHash } from "crypto";
 
 export type ObservationLevel = "info" | "warn" | "error";
 export type ObservationAttributes = Record<string, unknown>;
@@ -34,7 +34,7 @@ function canonical(value: unknown): string {
 }
 
 export function observationDigest(value: Omit<RuntimeObservation, "digest">) {
-  return crypto.createHash("sha256").update(canonical(value)).digest("hex");
+  return createHash("sha256").update(canonical(value)).digest("hex");
 }
 
 export function createRuntimeObservation(input: {
